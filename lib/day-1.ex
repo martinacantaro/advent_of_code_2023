@@ -1013,5 +1013,5 @@ defmodule AdventOfCode do
 
   list = String.split(input)
 
-  Enum.map(list, &find_first_and_last_nums/1)
+  Enum.map(list, &AdventOfCode.find_first_and_last_nums/1)
 end
