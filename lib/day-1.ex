@@ -4,10 +4,13 @@ defmodule AdventOfCode do
   def find_first_and_last_nums(word) do
     nums = Regex.scan(~r/\d/, word)
 
+    # TODO: if the string only has 1 number, return nil for last
+
     first =  List.first(nums)
     last = List.last(nums)
     [first, last]
   end
+end
 
   input =
     "zlmlk1
@@ -1013,5 +1016,5 @@ defmodule AdventOfCode do
 
   list = String.split(input)
 
-  Enum.map(list, &AdventOfCode.find_first_and_last_nums/1)
-end
+  result = Enum.map(list, &AdventOfCode.find_first_and_last_nums/1)
+  IO.inspect(result)
