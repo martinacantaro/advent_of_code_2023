@@ -4,11 +4,15 @@ defmodule AdventOfCode do
   def find_first_and_last_nums(word) do
     nums = Regex.scan(~r/\d/, word)
 
-    # TODO: if the string only has 1 number, return nil for last
+    # TODO: strange things are printed out in some lines, debug
+    first =  elem(Integer.parse(hd(List.first(nums))), 0)
+    last = elem(Integer.parse(hd(List.last(nums))), 0)
 
-    first =  List.first(nums)
-    last = List.last(nums)
-    [first, last]
+    if length(nums) == 1 do
+      [first]
+    else
+      [first, last]
+    end
   end
 end
 
