@@ -1,27 +1,26 @@
 defmodule Day2 do
   def read_input(str) do
-    [game_and_number | balls] = String.split(str, ":") # Returns []"Game 1"], etc for head, and ["14 green, 8 blue ..."] as a single string for ttail
+    [game_and_number | balls] = String.split(str, ":") # Returns []"Game 1"], etc for head, and ["14 green, 8 blue ..."] as a single string for tail
 
     # Parse game number
     split_game_and_number = String.split(game_and_number) # Returns ["Game", "1"]
     number = tl(split_game_and_number) # Returns ["1"]
     integer = String.to_integer(hd(number)) # Returns 1
-
-    balls = parse_balls(balls)
+    balls = batches(balls)
     [integer, balls]
   end
 
-  def parse_balls(ball_info) do
-    # Parse ball count
-    split_by_batch = String.split(hd(ball_info), [",", ";"], trim: true) # Returns [" 1 green", " 3 blue",  ...]
-    split_number_from_color = Enum.map(split_by_batch, fn x -> String.split(x, " ", trim: true) end) #["3", "green"],  ["3", "blue"], ["1", "red"]...
-
-    total_by_color = Enum.reduce(split_number_from_color, %{}, fn [number_str, color], acc ->
-      number = String.to_integer(number_str)
-      updated_acc = Map.update(acc, color, number, fn existing_value -> existing_value + number end)
-      updated_acc
+  def batches(ball_info) do
+    split_by_batch = String.split(hd(ball_info), ";", trim: true)
+      # Returns [" 14 green, 8 blue, 9 red", " 5 blue, 4 green, 2 red",
+      # " 4 red, 4 blue, 4 green", " 1 blue, 3 green, 2 red",
+      # " 10 red, 3 blue, 15 green", " 2 red, 6 green, 3 blue"]
+    list_of_lists = Enum.map(split_by_batch, fn x -> String.split(x, ",", trim: true) end)
+    |> Enum.map(fn x -> Enum.map(x, fn y -> String.split(y,  " ", trim: true)
+      |> Map.new(y, fn [a, b] -> {b, a} end)
+      end)
     end)
-    total_by_color
+    IO.inspect(list_of_lists)
   end
 end
 
