@@ -8,23 +8,27 @@ defmodule Day3 do
   def symbol_positions(list) do
     Enum.reduce(list, %{"row" => 0, "col" => 0, "symbols_list" => [], "numbers_list" => []}, fn x, acc ->
       row = Map.get(acc, "row")
-      #Map.update(acc, "col", 0, &(&1))
       new_acc =
         Enum.reduce(String.codepoints(x), acc, fn y, acc_inner ->
           col = Map.get(acc_inner, "col") + 1
           if !String.match?(y, ~r/^-?\d+$/) do
-            if y != "." do # Ignore dots
-              IO.inspect(y)
 
+            if y != "." do # case symbol
+              IO.inspect("symbol")
               symbol_coordinates = [row, Map.get(acc_inner, "col")]
               %{"row" => row, "col" => col, "symbols_list" => Map.get(acc_inner, "symbols_list") ++ [symbol_coordinates], "numbers_list" => Map.get(acc_inner, "numbers_list")}
             end
+            # case dot
+            IO.inspect("dot")
             %{"row" => row, "col" => col, "symbols_list" => Map.get(acc_inner, "symbols_list"), "numbers_list" => Map.get(acc_inner, "numbers_list")}
           else
+            # case number
+            IO.inspect("number")
             number_coordinates = [row, Map.get(acc_inner, "col")]
             %{"row" => row, "col" => col, "symbols_list" => Map.get(acc_inner, "symbols_list"), "numbers_list" => Map.get(acc_inner, "numbers_list") ++ [number_coordinates]}
           end
         end)
+      IO.inspect(Map.get(new_acc, "symbols_list"))
       %{"row" => row + 1, "col" => 0, "symbols_list" => Map.get(new_acc, "symbols_list"), "numbers_list" => Map.get(new_acc, "numbers_list")}
     end)
   end
@@ -172,6 +176,6 @@ input = "...........441.................367................296..................
 ....................571.......................720..........269...........885.............................902...........80...738..........975"
 
 input_list = String.split(input, "\n") #splits every line of the input
-length_of_string = String.length(hd(input_list)) # 140
+_length_of_string = String.length(hd(input_list)) # 140
 symbols = Day3.symbol_positions(input_list)
 IO.inspect(symbols)
